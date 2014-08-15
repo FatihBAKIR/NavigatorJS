@@ -1,0 +1,26 @@
+<#MAIN>
+<b>Hello World!</b>
+<table id="helloTable">
+    <tbody></tbody>
+</table>
+<!#>
+
+<#SCRIPTS>
+@welcome.js
+<!#>
+
+<#TEMPLATES>
+<script id="Row" type="text/template">
+    <tr>
+        <td>
+            <button type="button" class="clickMe">{{this}}</button>
+        </td>
+    </tr>
+</script>
+<!#>
+
+<#DATA>
+{
+    "name": "Welcome"
+}
+<!#>
