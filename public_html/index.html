@@ -7,16 +7,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div id="main">            
+        <div id="main">
         </div>
     </body>
-    
+
     <script src="js/jquery.js"></script>
     <script src="js/handlebars.min.js"></script>
     <script src="js/Navigator.js"></script>
-    
+
     <script>
-        Navigator.LoadViews("Navigation", ["welcome", "big"]);
+        Navigator.LoadViews("Navigation", ["welcome", "big", "loading"]);
+        Navigator.LoadingView = "loading";
+        Navigator.ChangeURL = true;
         Navigator.Navigate("Welcome");
     </script>
 </html>
