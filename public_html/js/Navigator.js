@@ -154,6 +154,7 @@ window.Navigator = {
 
         window.Args = args;
         window.Templates = this.ActiveView.Templates;
+        window.ViewData = this.ActiveView.Data;
     },
     ActiveView: null
 };
