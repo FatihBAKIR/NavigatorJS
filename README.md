@@ -5,6 +5,49 @@ NavigatorJS
 
 It provides a **View** template with *main*, *styles*, *scripts* and *templates*. Also there is a *data* field.
 
+Note About Examples
+----------
+You should have an index.html with this main structure:
+
+    <html>
+        <head>
+            <title>NavigatorJS</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body>
+            <div id="main">
+            </div>
+        </body>
+    
+        <script src="js/jquery.js"></script>
+        <script src="js/handlebars.min.js"></script>
+        <script src="js/Navigator.js"></script>
+    
+        <script>
+            Navigator.LoadViews("Navigation", ["welcome", "big", "loading"]);
+            Navigator.LoadingView = "loading";
+            Navigator.Navigate("Welcome");
+        </script>
+    </html>
+
+NavigatorJS depends on jQuery and HandlebarsJS, download them from their sites or from the examples included in this repository.
+
+    Navigator.LoadViews("Navigation", ["welcome", "big", "loading"]);
+
+This row means that Navigator's root path is *Navigation*, which it will search for *welcome.html, big.html, loading.html* and load the Views from those files.
+
+    Navigator.LoadingView = "loading";
+
+This row means that Navigator should show the *loading* View while Navigating, which means loading scripts and styles.
+
+    Navigator.Navigate("Welcome");
+
+This row simply orders Navigator to load the Welcome view provided by one of the files above (*welcome.html*), thus starting the application.
+
+>When using the examples below, remember to put the **hello.html** in the root directory, in case of this example, *Navigation*.
+>Other scripts and stylesheets are relative to **index.html**
+
 Main Field
 ----------
 
