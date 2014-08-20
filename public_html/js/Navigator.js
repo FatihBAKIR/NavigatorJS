@@ -120,19 +120,15 @@ window.Navigator = {
             window.history.pushState({"page": page, "args": args}, "", "/Navigator/#" + page);
 
         this.ActiveView = this.Views[page];
-
+        this.UnloadStyle();
         if (this.ActiveView.StyleSheets != null)
         {
+            for (i = 0; i < 10; i++) {
+
+            }
             var SheetCount = this.ActiveView.StyleSheets.length;
             for (var i = 0; i < SheetCount; i++)
-                if (document.createStyleSheet)
-                {
-                    document.createStyleSheet(this.ActiveView.StyleSheets[i]);
-                }
-                else
-                {
-                    $('<link rel="stylesheet" type="text/css" href="' + this.ActiveView.StyleSheets[i] + '" />').appendTo('head');
-                }
+                this.LoadStyle(this.ActiveView.StyleSheets[i]);
         }
 
         if (this.ActiveView.ScriptFiles != null)
@@ -156,7 +152,28 @@ window.Navigator = {
         window.Templates = this.ActiveView.Templates;
         window.ViewData = this.ActiveView.Data;
     },
-    ActiveView: null
+    ActiveView: null,
+    LoadStyle: function(file)
+    {
+        if (document.createStyleSheet)
+        {
+            document.createStyleSheet(file);
+        }
+        else
+        {
+            $('<link rel="stylesheet" type="text/css" href="' + file + '" />').appendTo('head');
+        }
+    },
+    UnloadStyle: function()
+    {
+        ///TODO
+        //document.getElementsByTagName('link')[0].disabled = true;
+        $("link").each(function()
+        {
+            $(this).remove();
+            //alert($(this).attr("href"));
+        });
+    }
 };
 
 function Event(name, handle)
