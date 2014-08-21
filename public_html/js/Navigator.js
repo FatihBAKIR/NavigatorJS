@@ -123,56 +123,62 @@ window.Navigator = {
         this.UnloadStyle();
         if (this.ActiveView.StyleSheets != null)
         {
-            for (i = 0; i < 10; i++) {
-
-            }
             var SheetCount = this.ActiveView.StyleSheets.length;
             for (var i = 0; i < SheetCount; i++)
                 this.LoadStyle(this.ActiveView.StyleSheets[i]);
         }
 
-        if (this.ActiveView.ScriptFiles != null)
-        {
-            var DoneScripts = 0;
-            var ScriptCount = this.ActiveView.ScriptFiles.length;
-            for (var i = 0; i < ScriptCount; i++)
-                $.getScript(this.ActiveView.ScriptFiles[i], function() {
-                    DoneScripts++;
-                    if (DoneScripts === ScriptCount)
-                    {
-                        $("#main").html(Navigator.ActiveView.MainView);
-                        Events.BroadCastMessage(Navigator.ActiveView.Name + ".Load", args);
-                    }
-                });
-        }
-        else
-            $("#main").html(this.ActiveView.MainView);
-
         window.Args = args;
         window.Templates = this.ActiveView.Templates;
         window.ViewData = this.ActiveView.Data;
+        
+        if (this.ActiveView.ScriptFiles != null)
+            this.LoadScripts();
+        else
+            $("#main").html(this.ActiveView.MainView);
     },
     ActiveView: null,
     LoadStyle: function(file)
     {
         if (document.createStyleSheet)
-        {
             document.createStyleSheet(file);
-        }
         else
-        {
-            $('<link rel="stylesheet" type="text/css" href="' + file + '" />').appendTo('head');
-        }
+            $('<link rel="stylesheet" type="text/css" href="' + file + '" dynamic="1" />').appendTo('head');
     },
     UnloadStyle: function()
     {
-        ///TODO
-        //document.getElementsByTagName('link')[0].disabled = true;
         $("link").each(function()
         {
-            $(this).remove();
-            //alert($(this).attr("href"));
+            if ($(this).attr("dynamic") == "1")
+                $(this).remove();
         });
+    },
+    LoadedScripts: [],
+    LoadScripts: function()
+    {
+        window.DoneScripts = 0;
+        window.ScriptCount = this.ActiveView.ScriptFiles.length;
+        for (var i = 0; i < ScriptCount; i++)
+            this.LoadScript(this.ActiveView.ScriptFiles[i]);
+    },
+    LoadScript: function(file)
+    {
+        if (this.LoadedScripts.indexOf(file) === -1)
+            $.getScript(file, function() {
+                Navigator.LoadedScripts.push(file);
+                Navigator.CheckLoading();
+            });
+        else
+            this.CheckLoading();
+    },
+    CheckLoading: function()
+    {
+        DoneScripts++;
+        if (DoneScripts === ScriptCount)
+        {
+            $("#main").html(Navigator.ActiveView.MainView);
+            Events.BroadCastMessage(Navigator.ActiveView.Name + ".Load", window.Args);
+        }
     }
 };
 
