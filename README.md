@@ -98,7 +98,7 @@ The **Styles** field lets you dynamically link CSS files with your view, so when
 Scripts Field
 ----------
 Scripts field is very much alike with the Styles field, linking JavaScript files with your view.
-Every js file will be included and ran immediately after loading them when the View is navigated.
+Every js file will be included and and appropriate events will be fired immediately after loading them when the View is navigated.
 
 **hello.html**
 
@@ -112,21 +112,22 @@ Every js file will be included and ran immediately after loading them when the V
     
 **scripts/hello.js**
     
-    alert("Dynamically Loaded JavaScript!");
+    alert("JavaScript Loaded!");
     
-This is a very simple example but the point is clear. When navigated to the hello view, a message box with caption *Dynamically Loaded JavaScript!* will be shown.
+This is a very simple example but the point is clear. When navigated to the hello view, a message box with caption *JavaScript Loaded!* will be shown.
 
 >Note:
->When your View loads a single JavaScript document, the above example is completely safe.
->But, if your View depends on more than one JS document, your logic should run after all the script files are loaded.
+>When your scripts need to run once, the above example is completely safe, as it will be run on the first time it's loaded
+>But, if your logic should be run every time the View is navigated, your logic should run when the View is Navigated not when the script is loaded
 >In that case, you should add a listener to the *hello.Load* event, and write your logic in the callback method.
->*hello.Load* => **hello** is the name of your View, **Load** is the event name, so *hello.Load* event is fired when every dependency is loaded.
+>*hello.Load* => **hello** is the name of your View, **Load** is the event name, so *hello.Load* event is fired when all the dependencies are ready and the page is navigated.
+>So **LOADING** is **NOT** being **NAVIGATED**
 
 **example.js**
 
     Events.AddListener("hello.Load", function(args)
     {
-        alert("Dynamically Loaded JavaScript!");
+        alert("Dynamically Running JavaScript!");
     });
     
 This way, you can make sure that your code will not fail because of a missing dependency.
@@ -134,7 +135,7 @@ That args argument will be discussed later :)
 
 Templates Field
 ---------
-My favorite web templating engine is [HandlebarsJS][1], and I included it as a pre-requisite in Navigator. 
+My favorite web templating engine is [HandlebarsJS][1], and I included it as a pre-requisite in Navigator, although using another templating engine takes at most 1 row change. 
 Simply, writing your mustache/handlebars templates in script tags within this field will let you use those templates without any additional work.
 I believe I can demonstrate this on a simple example:
 
